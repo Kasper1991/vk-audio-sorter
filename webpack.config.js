@@ -6,11 +6,13 @@ module.exports = {
 
   output: {
     path: __dirname + "/dist",
-    filename: "app.js",
+    filename: "bundle.js",
     publicPath: '/dist/'
   },
 
-  watch: true,
+  resolve: {
+    extensions: ['.ts', '.js', '.json', '']
+  },
 
   watchOptions: {
     aggregateTimeout: 100
@@ -21,13 +23,9 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.js$/,
+        test: /\.ts$/,
         exclude: /(node_modules|bower_components)/,
-        loader: "babel",
-        query: {
-          presets: ['es2015'],
-          plugins: ['transform-runtime']
-        }
+        loader: "ts"
       },
       {
         test: /\.json$/,
@@ -39,7 +37,7 @@ module.exports = {
 
   devServer: {
     inline: true,
-    noInfo: true,
+    noInfo: false,
     open: true
   }
 };

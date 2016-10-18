@@ -1,23 +1,16 @@
 var webpackConfig = require('./webpack.config.js');
 
-webpackConfig.entry = {};
-webpackConfig.devtool = 'inline-source-map';
-
 module.exports = function(config) {
 
   config.set({
 
     basePath: './',
 
-    autoWatch: true,
-
-    browsers: ['Chrome'],
-
     files: [
-      {pattern: 'src/**/*.spec.js', watched: false}
+      {pattern: 'src/**/*.spec.ts', watched: false}
     ],
 
-    frameworks: ['mocha', 'chai'],
+    frameworks: ['mocha', 'chai', 'sinon'],
 
     plugins: [
       'karma-chrome-launcher',
@@ -31,12 +24,20 @@ module.exports = function(config) {
       'src/**/*.spec.js': ['webpack', 'sourcemap']
     },
 
-    reporters: ['progress'],
-
-    webpack: webpackConfig,
+    webpack: {
+      module: webpackConfig.module,
+      resolve: webpackConfig.resolve
+    },
 
     webpackMiddleware: {
       noInfo: true
-    }
+    },
+
+    autoWatch: true,
+    browsers: ['Chrome'],
+    reporters: ['progress'],
+    colors: true,
+    singleRun: false,
+    concurrency: Infinity
   });
 };
