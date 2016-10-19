@@ -1,10 +1,4 @@
-import ArtistsCollection from './artists-collection';
-import Collection from './collection';
-import Audio from './audio';
+import Parser from './parser';
 
-let audios: Audio[] = require('./audios'),
-    artists: Collection = new ArtistsCollection();
-
-artists.set(audios);
-
-console.log(artists);
+let audios: any[] = require('./audios'),
+    parser: Parser = new Parser();

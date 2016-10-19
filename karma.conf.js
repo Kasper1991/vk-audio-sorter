@@ -10,7 +10,7 @@ module.exports = function(config) {
       {pattern: 'src/**/*.spec.ts', watched: false}
     ],
 
-    frameworks: ['mocha', 'chai', 'sinon'],
+    frameworks: ['mocha', 'chai'],
 
     plugins: [
       'karma-chrome-launcher',
@@ -21,7 +21,7 @@ module.exports = function(config) {
     ],
 
     preprocessors: {
-      'src/**/*.spec.js': ['webpack', 'sourcemap']
+      'src/**/*.spec.ts': ['webpack', 'sourcemap']
     },
 
     webpack: {
