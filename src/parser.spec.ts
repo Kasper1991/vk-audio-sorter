@@ -1,10 +1,11 @@
 import Parser from './parser';
 
-//let chai = require('chai');
+let should = require('chai').should();
 
 chai.should();
 
 describe('Parser', () => {
+
     let parser: Parser,
         audios = [
             {
@@ -26,32 +27,51 @@ describe('Parser', () => {
         parser.set(audios);
     });
 
-    describe('#set', () => {
+    describe('#set()', () => {
 
-        it('tracks should contain all audios', () => {
+        it('should put to tracks all audios', () => {
             parser.tracks.should.to.have.length(3);
         });
 
-        it('each track should contain artist', () => {
+        it('should add track to each artist', () => {
             parser.tracks.forEach((track) => {
                 track.artist.should.to.be.an('object');
             })
         });
 
-        it('artists should contain only unique artists', () => {
+        it('should put to artists only unique artists', () => {
             parser.artists.should.have.length(2);
         });
 
-        it('each artist should contain at least one track', () => {
+        it('should add to artist at least one track', () => {
             parser.artists.forEach((artist) => {
                 artist.tracks.should.to.have.length.at.least(1);
             })
         });
+    });
 
-        it('each artist should contain their tracks', () => {
-            parser.artists.forEach((artist) => {
-                artist.tracks.should.to.be.an('array');
-            })
+    describe("#findArtistByTitle()", () => {
+
+        describe('should return', () => {
+
+            it('artist if it is exists', () => {
+                parser.findArtistByTitle('artist 1').should.to.be.an('object');
+            });
+
+            it('undefined if artist is\'nt exists', () => {
+                should.not.exist(parser.findArtistByTitle('artist 3'));
+            });
+        });
+
+        describe('should find', () => {
+
+            it('without case sensitivity', () => {
+                parser.findArtistByTitle('ARTIST 1').should.to.be.an('object');
+            });
+
+            it('with whitespace at begin or/and end of title', () => {
+                parser.findArtistByTitle(' artist 1 ').should.to.be.an('object');
+            });
         });
     });
 });

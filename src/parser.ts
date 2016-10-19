@@ -5,9 +5,7 @@ export default class Parser{
 
     public set(audios: any[]) : void {
         audios.forEach((audio) => {
-            let isExists = this.artists.find((artist) => {
-                return artist.title == audio.artist;
-            });
+            let isExists = this.findArtistByTitle(audio.artist);
 
             if(!isExists) {
                 isExists = {
@@ -17,9 +15,22 @@ export default class Parser{
                 this.artists.push(isExists);
             }
 
-            audio.artist = isExists;
-            isExists.tracks.push(audio);
-            this.tracks.push(audio);
+            let track  = {
+                title: audio.title,
+                id: audio.aid,
+                artist: isExists
+            };
+
+            isExists.tracks.push(track);
+            this.tracks.push(track);
+        })
+    }
+
+    public findArtistByTitle(title: string) {
+        return this.artists.find((artist) => {
+            let title1 = title.trim().toLowerCase(),
+                title2 = artist.title.trim().toLowerCase();
+            return title1 == title2;
         })
     }
 }
