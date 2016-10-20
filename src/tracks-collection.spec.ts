@@ -1,12 +1,13 @@
-import {TrackCollection} from './tracks-collection';
+import {TracksCollection} from './tracks-collection';
 import {CollectionItem} from './collection';
 import {Track} from './track';
+import {Artist} from './artist';
 
 let should = require('chai').should();
 
 describe('TrackCollection', () => {
 
-    let collection: TrackCollection,
+    let collection: TracksCollection,
         params = {
             title: 'title',
             id: 123456789,
@@ -14,7 +15,7 @@ describe('TrackCollection', () => {
         };
 
     before(() => {
-        collection = new TrackCollection();
+        collection = new TracksCollection();
     });
 
     describe('after initialization', () => {
@@ -84,4 +85,21 @@ describe('TrackCollection', () => {
             });
         });
     });
+
+    describe('#add()', () => {
+        it('should add track to array of tracks', () => {
+            let prevTracksLength = collection.items.length,
+                artist = new Artist({
+                    title: 'title'
+                }),
+                track: Track = new Track({
+                    title: 'title',
+                    id: 123456789,
+                    artist: artist
+                });
+
+            collection.add(track);
+            collection.items.should.to.have.lengthOf(prevTracksLength + 1);
+        })
+    })
 });

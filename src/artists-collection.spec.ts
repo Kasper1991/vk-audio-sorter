@@ -21,7 +21,15 @@ describe('ArtistsCollection', () => {
         })
     });
 
-    describe('#createAndAddArtist()', () => {
+    describe('length', () => {
+        it('should return length of artists array', () => {
+            collection.length.should.equal(collection.items.length);
+            collection.createAndAdd(params);
+            collection.length.should.equal(collection.items.length);
+        })
+    });
+
+    describe('#createAndAdd()', () => {
 
         it('should return new Artist instance', () => {
             let track: CollectionItem = collection.createAndAdd(params);
@@ -66,18 +74,22 @@ describe('ArtistsCollection', () => {
         });
     });
 
-    describe('length', () => {
-        it('should equal length of tracks array', () => {
-            collection.length.should.equal(collection.items.length);
-            collection.createAndAdd(params);
-            collection.length.should.equal(collection.items.length);
-        })
-    });
-
     describe('#create()', () => {
         it('should return new Artist instance', () => {
             let track: CollectionItem = collection.create(params);
             track.should.be.instanceof(Artist);
         });
+    });
+
+    describe('#add()', () => {
+        it('should add artist to array of artists', () => {
+            let prevTracksLength = collection.items.length,
+                artist = new Artist({
+                    title: 'title'
+                });
+
+            collection.add(artist);
+            collection.items.should.to.have.lengthOf(prevTracksLength + 1);
+        })
     })
 });

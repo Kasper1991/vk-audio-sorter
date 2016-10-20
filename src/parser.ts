@@ -1,14 +1,14 @@
 import {Track} from './track';
 import {Artist} from './artist';
 import {VKAudio} from './vk-audio';
-import {TrackCollection} from './tracks-collection';
+import {TracksCollection} from './tracks-collection';
 import {ArtistsCollection} from './artists-collection';
 import {Collection, CollectionItem} from './collection';
 
 export class Parser{
 
-    tracks: TrackCollection = new TrackCollection();
-    artists: ArtistsCollection = new ArtistsCollection();
+    public tracks: Collection = new TracksCollection();
+    public artists: Collection = new ArtistsCollection();
 
     public set(audios: VKAudio[]) : void {
         audios.forEach((audio: VKAudio) : void => {

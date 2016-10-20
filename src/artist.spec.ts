@@ -18,17 +18,16 @@ describe('Artist', () => {
     });
 
     describe('#addTrack()', () => {
-
         it('should add track to tracks', () => {
             let prevTracksLength = artist.tracks.length,
                 track = new Track({
                     title: 'title',
                     id: 123456789,
-                    artist: {}
+                    artist: artist
                 });
 
             artist.addTrack(track);
             artist.tracks.should.to.have.lengthOf(prevTracksLength + 1);
         })
-    })
+    });
 });

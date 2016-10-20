@@ -1,4 +1,5 @@
 import {Track} from './track';
+import {Artist} from './artist';
 
 describe('Track', () => {
 
@@ -6,7 +7,9 @@ describe('Track', () => {
         params = {
             title: 'track',
             id: 123456,
-            artist: {}
+            artist: new Artist({
+                title: 'title'
+            })
         };
 
     before(() => {

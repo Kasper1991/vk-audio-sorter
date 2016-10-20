@@ -10,8 +10,12 @@ export abstract class Collection {
 
     public createAndAdd(params) : CollectionItem {
         let item: CollectionItem = this.create(params);
-        this.items.push(item);
+        this.add(item);
         return item;
+    }
+
+    public add(item: CollectionItem) : void {
+        this.items.push(item);
     }
 
     public findByTitle(title: string) : CollectionItem {
