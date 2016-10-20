@@ -1,24 +1,28 @@
-import Parser from './parser';
+import {Track} from './track';
+import {Parser} from './parser';
+import {Artist} from './artist';
+import {VKAudio} from './vk-audio';
 
 let should = require('chai').should();
-
-chai.should();
 
 describe('Parser', () => {
 
     let parser: Parser,
-        audios = [
+        audios: VKAudio[] = [
             {
                 title: 'audio 1',
-                artist: 'artist 1'
+                artist: 'artist 1',
+                aid: 1
             },
             {
                 title: 'audio 2',
                 artist: 'artist 2',
+                aid: 2
             },
             {
                 title: 'audio 3',
-                artist: 'artist 2'
+                artist: 'artist 2',
+                aid: 3
             }
         ];
 
@@ -30,12 +34,12 @@ describe('Parser', () => {
     describe('#set()', () => {
 
         it('should put to tracks all audios', () => {
-            parser.tracks.should.to.have.length(3);
+            parser.tracks.should.have.length(3);
         });
 
         it('should add track to each artist', () => {
-            parser.tracks.forEach((track) => {
-                track.artist.should.to.be.an('object');
+            parser.tracks.tracks.forEach((track) => {
+                track.artist.should.be.an('object');
             })
         });
 
@@ -44,34 +48,9 @@ describe('Parser', () => {
         });
 
         it('should add to artist at least one track', () => {
-            parser.artists.forEach((artist) => {
-                artist.tracks.should.to.have.length.at.least(1);
+            parser.artists.artists.forEach((artist) => {
+                artist.tracks.should.have.length.at.least(1);
             })
-        });
-    });
-
-    describe("#findArtistByTitle()", () => {
-
-        describe('should return', () => {
-
-            it('artist if it is exists', () => {
-                parser.findArtistByTitle('artist 1').should.to.be.an('object');
-            });
-
-            it('undefined if artist is\'nt exists', () => {
-                should.not.exist(parser.findArtistByTitle('artist 3'));
-            });
-        });
-
-        describe('should find', () => {
-
-            it('without case sensitivity', () => {
-                parser.findArtistByTitle('ARTIST 1').should.to.be.an('object');
-            });
-
-            it('with whitespace at begin or/and end of title', () => {
-                parser.findArtistByTitle(' artist 1 ').should.to.be.an('object');
-            });
         });
     });
 });

@@ -1,36 +1,31 @@
-export default class Parser{
+import {Track} from './track';
+import {Artist} from './artist';
+import {VKAudio} from './vk-audio';
+import {TrackCollection} from './tracks-collection';
+import {ArtistsCollection} from './artists-collection';
 
-    tracks: any[] = [];
-    artists: any[] = [];
+export class Parser{
 
-    public set(audios: any[]) : void {
-        audios.forEach((audio) => {
-            let isExists = this.findArtistByTitle(audio.artist);
+    tracks: TrackCollection = new TrackCollection();
+    artists: ArtistsCollection = new ArtistsCollection();
 
-            if(!isExists) {
-                isExists = {
-                    title: audio.artist,
-                    tracks: []
-                };
-                this.artists.push(isExists);
+    public set(audios: VKAudio[]) : void {
+        audios.forEach((audio: VKAudio) : void => {
+            let artist: Artist = this.artists.findArtistByTitle(audio.artist);
+
+            if(!artist) {
+                artist = this.artists.createAndAddArtist({
+                    title: audio.artist
+                });
             }
 
-            let track  = {
+            let track: Track = this.tracks.createAndAddTrack({
                 title: audio.title,
                 id: audio.aid,
-                artist: isExists
-            };
+                artist: artist
+            });
 
-            isExists.tracks.push(track);
-            this.tracks.push(track);
-        })
-    }
-
-    public findArtistByTitle(title: string) {
-        return this.artists.find((artist) => {
-            let title1 = title.trim().toLowerCase(),
-                title2 = artist.title.trim().toLowerCase();
-            return title1 == title2;
+            artist.addTrack(track);
         })
     }
 }
