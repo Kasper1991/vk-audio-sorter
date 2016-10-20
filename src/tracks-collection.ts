@@ -3,15 +3,7 @@ import {Collection, CollectionItem} from './collection';
 
 export class TrackCollection extends Collection {
 
-    items: Track[] = [];
-
-    createAndAdd(params) {
-        let track: Track = new Track(params);
-        this.items.push(track);
-        return track;
-    }
-
-    get length() {
-        return this.items.length;
+    public create(params) : CollectionItem {
+        return new Track(params);
     }
 }

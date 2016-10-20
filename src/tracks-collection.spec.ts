@@ -1,5 +1,8 @@
 import {TrackCollection} from './tracks-collection';
+import {CollectionItem} from './collection';
 import {Track} from './track';
+
+let should = require('chai').should();
 
 describe('TrackCollection', () => {
 
@@ -10,7 +13,7 @@ describe('TrackCollection', () => {
             artist: {}
         };
 
-    beforeEach(() => {
+    before(() => {
         collection = new TrackCollection();
     });
 
@@ -23,7 +26,7 @@ describe('TrackCollection', () => {
     describe('#createAndAddTrack()', () => {
 
         it('should return new Track instance', () => {
-            let track: Track = collection.createAndAdd(params);
+            let track: CollectionItem = collection.createAndAdd(params);
             track.should.be.instanceof(Track);
         });
 
@@ -40,5 +43,45 @@ describe('TrackCollection', () => {
             collection.createAndAdd(params);
             collection.length.should.equal(collection.items.length);
         })
-    })
+    });
+
+    describe('#create()', () => {
+        it('should return new Track instance', () => {
+            let track: CollectionItem = collection.create(params);
+            track.should.be.instanceof(Track);
+        });
+    });
+
+    describe("#findByTitle()", () => {
+
+        before(() => {
+            collection.createAndAdd({
+                title: 'track 1',
+                id: 123456789,
+                artist: {}
+            })
+        });
+
+        describe('should return', () => {
+
+            it('artist if it is exists', () => {
+                collection.findByTitle('track 1').should.be.an('object');
+            });
+
+            it('undefined if artist is\'nt exists', () => {
+                should.not.exist(collection.findByTitle('track 3'));
+            });
+        });
+
+        describe('should find', () => {
+
+            it('without case sensitivity', () => {
+                collection.findByTitle('TRACK 1').should.be.an('object');
+            });
+
+            it('with whitespace at begin or/and end of title', () => {
+                collection.findByTitle(' track 1 ').should.be.an('object');
+            });
+        });
+    });
 });

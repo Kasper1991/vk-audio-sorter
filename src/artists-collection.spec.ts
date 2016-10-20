@@ -1,4 +1,5 @@
 import {ArtistsCollection} from './artists-collection';
+import {CollectionItem} from './collection';
 import {Artist} from './artist';
 
 let should = require('chai').should();
@@ -23,7 +24,7 @@ describe('ArtistsCollection', () => {
     describe('#createAndAddArtist()', () => {
 
         it('should return new Artist instance', () => {
-            let track: Artist = collection.createAndAdd(params);
+            let track: CollectionItem = collection.createAndAdd(params);
             track.should.be.instanceof(Artist);
         });
 
@@ -34,8 +35,7 @@ describe('ArtistsCollection', () => {
         })
     });
 
-
-    describe("#findArtistByTitle()", () => {
+    describe("#findByTitle()", () => {
 
         before(() => {
             collection.createAndAdd({
@@ -46,22 +46,22 @@ describe('ArtistsCollection', () => {
         describe('should return', () => {
 
             it('artist if it is exists', () => {
-                collection.findArtistByTitle('artist 1').should.be.an('object');
+                collection.findByTitle('artist 1').should.be.an('object');
             });
 
             it('undefined if artist is\'nt exists', () => {
-                should.not.exist(collection.findArtistByTitle('artist 3'));
+                should.not.exist(collection.findByTitle('artist 3'));
             });
         });
 
         describe('should find', () => {
 
             it('without case sensitivity', () => {
-                collection.findArtistByTitle('ARTIST 1').should.be.an('object');
+                collection.findByTitle('ARTIST 1').should.be.an('object');
             });
 
             it('with whitespace at begin or/and end of title', () => {
-                collection.findArtistByTitle(' artist 1 ').should.be.an('object');
+                collection.findByTitle(' artist 1 ').should.be.an('object');
             });
         });
     });
@@ -72,5 +72,12 @@ describe('ArtistsCollection', () => {
             collection.createAndAdd(params);
             collection.length.should.equal(collection.items.length);
         })
+    });
+
+    describe('#create()', () => {
+        it('should return new Artist instance', () => {
+            let track: CollectionItem = collection.create(params);
+            track.should.be.instanceof(Artist);
+        });
     })
 });

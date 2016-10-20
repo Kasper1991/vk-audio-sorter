@@ -9,7 +9,7 @@ describe('Track', () => {
             artist: {}
         };
 
-    beforeEach(() => {
+    before(() => {
         track = new Track(params);
     });
 

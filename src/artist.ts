@@ -1,11 +1,12 @@
 import {Track} from './track';
+import {CollectionItem} from './collection';
 
-export class Artist {
-    title: string;
-    tracks: Track[] = [];
+export class Artist extends CollectionItem {
+
+    public tracks: Track[] = [];
 
     constructor({title} : {title: string}) {
-        this.title = title;
+        super(title);
     }
 
     addTrack(track: Track) {

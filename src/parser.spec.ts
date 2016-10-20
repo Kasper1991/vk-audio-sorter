@@ -3,8 +3,6 @@ import {Parser} from './parser';
 import {Artist} from './artist';
 import {VKAudio} from './vk-audio';
 
-let should = require('chai').should();
-
 describe('Parser', () => {
 
     let parser: Parser,
@@ -26,7 +24,7 @@ describe('Parser', () => {
             }
         ];
 
-    beforeEach(() => {
+    before(() => {
         parser = new Parser();
         parser.set(audios);
     });
@@ -38,7 +36,7 @@ describe('Parser', () => {
         });
 
         it('should add track to each artist', () => {
-            parser.tracks.items.forEach((track) => {
+            parser.tracks.items.forEach((track: Track) => {
                 track.artist.should.be.an('object');
             })
         });
@@ -48,7 +46,7 @@ describe('Parser', () => {
         });
 
         it('should add to artist at least one track', () => {
-            parser.artists.items.forEach((artist) => {
+            parser.artists.items.forEach((artist: Artist) => {
                 artist.tracks.should.have.length.at.least(1);
             })
         });

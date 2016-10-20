@@ -5,7 +5,7 @@ describe('Artist', () => {
 
     let artist: Artist;
 
-    beforeEach(() => {
+    before(() => {
         artist = new Artist({
             title: 'title'
         });

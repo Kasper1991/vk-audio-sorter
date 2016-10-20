@@ -3,6 +3,7 @@ import {Artist} from './artist';
 import {VKAudio} from './vk-audio';
 import {TrackCollection} from './tracks-collection';
 import {ArtistsCollection} from './artists-collection';
+import {Collection, CollectionItem} from './collection';
 
 export class Parser{
 
@@ -11,7 +12,7 @@ export class Parser{
 
     public set(audios: VKAudio[]) : void {
         audios.forEach((audio: VKAudio) : void => {
-            let artist: Artist = this.artists.findArtistByTitle(audio.artist);
+            let artist: CollectionItem = this.artists.findByTitle(audio.artist);
 
             if(!artist) {
                 artist = this.artists.createAndAdd({
@@ -19,13 +20,13 @@ export class Parser{
                 });
             }
 
-            let track: Track = this.tracks.createAndAdd({
+            let track: CollectionItem = this.tracks.createAndAdd({
                 title: audio.title,
                 id: audio.aid,
                 artist: artist
             });
 
-            artist.addTrack(track);
+            (<Artist>artist).addTrack(<Track>track);
         })
     }
 }
