@@ -14,12 +14,12 @@ export class Parser{
             let artist: Artist = this.artists.findArtistByTitle(audio.artist);
 
             if(!artist) {
-                artist = this.artists.createAndAddArtist({
+                artist = this.artists.createAndAdd({
                     title: audio.artist
                 });
             }
 
-            let track: Track = this.tracks.createAndAddTrack({
+            let track: Track = this.tracks.createAndAdd({
                 title: audio.title,
                 id: audio.aid,
                 artist: artist

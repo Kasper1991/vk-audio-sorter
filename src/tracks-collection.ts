@@ -1,16 +1,17 @@
 import {Track} from './track';
+import {Collection, CollectionItem} from './collection';
 
-export class TrackCollection {
+export class TrackCollection extends Collection {
 
-    tracks: Track[] = [];
+    items: Track[] = [];
 
-    createAndAddTrack(params) {
+    createAndAdd(params) {
         let track: Track = new Track(params);
-        this.tracks.push(track);
+        this.items.push(track);
         return track;
     }
 
     get length() {
-        return this.tracks.length;
+        return this.items.length;
     }
 }

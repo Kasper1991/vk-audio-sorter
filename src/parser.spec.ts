@@ -38,7 +38,7 @@ describe('Parser', () => {
         });
 
         it('should add track to each artist', () => {
-            parser.tracks.tracks.forEach((track) => {
+            parser.tracks.items.forEach((track) => {
                 track.artist.should.be.an('object');
             })
         });
@@ -48,7 +48,7 @@ describe('Parser', () => {
         });
 
         it('should add to artist at least one track', () => {
-            parser.artists.artists.forEach((artist) => {
+            parser.artists.items.forEach((artist) => {
                 artist.tracks.should.have.length.at.least(1);
             })
         });

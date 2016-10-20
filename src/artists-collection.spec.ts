@@ -16,21 +16,21 @@ describe('ArtistsCollection', () => {
 
     describe('after initialization', () => {
         it('should contain artists array', () => {
-            collection.artists.should.be.an('array');
+            collection.items.should.be.an('array');
         })
     });
 
     describe('#createAndAddArtist()', () => {
 
         it('should return new Artist instance', () => {
-            let track: Artist = collection.createAndAddArtist(params);
+            let track: Artist = collection.createAndAdd(params);
             track.should.be.instanceof(Artist);
         });
 
         it('should add track to array of tracks', () => {
-            let prevTracksLength = collection.artists.length;
-            collection.createAndAddArtist(params);
-            collection.artists.should.to.have.lengthOf(prevTracksLength + 1);
+            let prevTracksLength = collection.items.length;
+            collection.createAndAdd(params);
+            collection.items.should.to.have.lengthOf(prevTracksLength + 1);
         })
     });
 
@@ -38,7 +38,7 @@ describe('ArtistsCollection', () => {
     describe("#findArtistByTitle()", () => {
 
         before(() => {
-            collection.createAndAddArtist({
+            collection.createAndAdd({
                 title: 'artist 1'
             })
         });
@@ -68,9 +68,9 @@ describe('ArtistsCollection', () => {
 
     describe('length', () => {
         it('should equal length of tracks array', () => {
-            collection.length.should.equal(collection.artists.length);
-            collection.createAndAddArtist(params);
-            collection.length.should.equal(collection.artists.length);
+            collection.length.should.equal(collection.items.length);
+            collection.createAndAdd(params);
+            collection.length.should.equal(collection.items.length);
         })
     })
 });

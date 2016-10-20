@@ -1,18 +1,19 @@
 import {Artist} from './artist';
+import {Collection, CollectionItem} from './collection';
 
-export class ArtistsCollection {
+export class ArtistsCollection extends Collection {
 
-    artists: Artist[] = [];
+    items: CollectionItem[] = [];
 
-    public createAndAddArtist(params) : Artist {
+    public createAndAdd(params) : Artist {
         let artist = new Artist(params);
-        this.artists.push(artist);
+        this.items.push(artist);
         return artist;
     }
 
     public findArtistByTitle(title: string) : Artist {
         return this
-            .artists
+            .items
             .find((artist: Artist) : boolean => {
                 let title1: string = title.trim().toLowerCase(),
                     title2: string = artist.title.trim().toLowerCase();
@@ -22,6 +23,6 @@ export class ArtistsCollection {
     }
 
     get length() {
-        return this.artists.length;
+        return this.items.length;
     }
 }
