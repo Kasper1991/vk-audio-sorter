@@ -10,12 +10,13 @@ module.exports = function(config) {
       {pattern: 'src/**/*.spec.ts', watched: false}
     ],
 
-    frameworks: ['mocha', 'chai'],
+    frameworks: ['mocha', 'chai', 'sinon'],
 
     plugins: [
       'karma-chrome-launcher',
       'karma-chai',
       'karma-mocha',
+      'karma-sinon',
       'karma-sourcemap-loader',
       'karma-webpack'
     ],
@@ -35,9 +36,10 @@ module.exports = function(config) {
 
     autoWatch: true,
     browsers: ['Chrome'],
-    reporters: ['progress'],
+    reporters: ['dots'],
     colors: true,
     singleRun: false,
-    concurrency: Infinity
+    concurrency: Infinity,
+    logLevel: config.LOG_ERROR
   });
 };

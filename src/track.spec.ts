@@ -17,6 +17,6 @@ describe('Track', () => {
     });
 
     it('should have id, title and artist', () => {
-       track.should.have.all.keys(['id', 'title', 'artist']);
+       track.should.contain.all.keys(['id', 'title', 'artist']);
     });
 });

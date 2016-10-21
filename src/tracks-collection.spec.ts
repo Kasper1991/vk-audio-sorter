@@ -3,7 +3,11 @@ import {CollectionItem} from './collection';
 import {Track} from './track';
 import {Artist} from './artist';
 
-let should = require('chai').should();
+let chai = require('chai'),
+    chaiAsPromised = require('chai-as-promised'),
+    expect = chai.expect;
+
+chai.use(chaiAsPromised);
 
 describe('TrackCollection', () => {
 
@@ -65,23 +69,27 @@ describe('TrackCollection', () => {
 
         describe('should return', () => {
 
-            it('artist if it is exists', () => {
-                collection.findByTitle('track 1').should.be.an('object');
+            it('track if it is exists', () => {
+                let track = collection.findByTitle('track 1');
+                expect(track).eventually.to.be.instanceOf(Track);
             });
 
-            it('undefined if artist is\'nt exists', () => {
-                should.not.exist(collection.findByTitle('track 3'));
+            it('undefined if track is\'nt exists', () => {
+                let track = collection.findByTitle('track 3');
+                expect(track).eventually.to.be.undefined;
             });
         });
 
         describe('should find', () => {
 
             it('without case sensitivity', () => {
-                collection.findByTitle('TRACK 1').should.be.an('object');
+                let track = collection.findByTitle('TRACK 1');
+                expect(track).eventually.to.be.instanceOf(Track);
             });
 
             it('with whitespace at begin or/and end of title', () => {
-                collection.findByTitle(' track 1 ').should.be.an('object');
+                let track = collection.findByTitle(' track 1 ');
+                expect(track).eventually.to.be.instanceOf(Track);
             });
         });
     });

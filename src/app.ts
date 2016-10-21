@@ -1,4 +1,11 @@
 import {Parser} from './parser';
+import {VKAudio} from './vk-audio';
 
-let audios: any[] = require('./audios'),
+let audios: VKAudio[] = require('./audios'),
     parser: Parser = new Parser();
+
+parser
+    .setAudios(audios)
+    .then(() => {
+       console.log(parser)
+    });

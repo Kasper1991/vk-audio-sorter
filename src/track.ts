@@ -3,6 +3,7 @@ import {CollectionItem} from './collection';
 
 export class Track extends CollectionItem {
 
+    public shouldBeRemoved: boolean = false;
     public artist: Artist;
     public id: number;
 

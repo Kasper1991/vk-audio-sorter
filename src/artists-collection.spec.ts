@@ -2,7 +2,11 @@ import {ArtistsCollection} from './artists-collection';
 import {CollectionItem} from './collection';
 import {Artist} from './artist';
 
-let should = require('chai').should();
+let chai = require('chai'),
+    chaiAsPromised = require('chai-as-promised'),
+    expect = chai.expect;
+
+chai.use(chaiAsPromised);
 
 describe('ArtistsCollection', () => {
 
@@ -54,22 +58,26 @@ describe('ArtistsCollection', () => {
         describe('should return', () => {
 
             it('artist if it is exists', () => {
-                collection.findByTitle('artist 1').should.be.an('object');
+                let artist = collection.findByTitle('artist 1');
+                expect(artist).eventually.to.be.instanceOf(Artist);
             });
 
             it('undefined if artist is\'nt exists', () => {
-                should.not.exist(collection.findByTitle('artist 3'));
+                let artist = collection.findByTitle('artist 3');
+                expect(artist).eventually.to.be.undefined;
             });
         });
 
         describe('should find', () => {
 
             it('without case sensitivity', () => {
-                collection.findByTitle('ARTIST 1').should.be.an('object');
+                let artist = collection.findByTitle('ARTIST 1');
+                expect(artist).eventually.to.be.instanceOf(Artist);
             });
 
             it('with whitespace at begin or/and end of title', () => {
-                collection.findByTitle(' artist 1 ').should.be.an('object');
+                let artist = collection.findByTitle(' artist 1 ');
+                expect(artist).eventually.to.be.instanceOf(Artist);
             });
         });
     });

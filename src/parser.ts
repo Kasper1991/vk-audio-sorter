@@ -10,23 +10,27 @@ export class Parser{
     public tracks: Collection = new TracksCollection();
     public artists: Collection = new ArtistsCollection();
 
-    public set(audios: VKAudio[]) : void {
-        audios.forEach((audio: VKAudio) : void => {
-            let artist: CollectionItem = this.artists.findByTitle(audio.artist);
+    public async setAudios(audios: VKAudio[]) : Promise<void> {
+        for(const audio of audios) {
+            await this.setAudio(audio);
+        }
+    }
 
-            if(!artist) {
-                artist = this.artists.createAndAdd({
-                    title: audio.artist
-                });
-            }
+    public async setAudio(audio: VKAudio) : Promise<void> {
+        let artist: CollectionItem = await this.artists.findByTitle(audio.artist);
 
-            let track: CollectionItem = this.tracks.createAndAdd({
-                title: audio.title,
-                id: audio.aid,
-                artist: artist
+        if(!artist) {
+            artist = this.artists.createAndAdd({
+                title: audio.artist
             });
+        }
 
-            (<Artist>artist).addTrack(<Track>track);
-        })
+        let track: CollectionItem = this.tracks.createAndAdd({
+            title: audio.title,
+            id: audio.aid,
+            artist: artist
+        });
+
+        (<Artist>artist).addTrack(<Track>track);
     }
 }

@@ -18,15 +18,13 @@ export abstract class Collection {
         this.items.push(item);
     }
 
-    public findByTitle(title: string) : CollectionItem {
-        return this
-            .items
-            .find((item: CollectionItem) : boolean => {
-                let title1: string = title.trim().toLowerCase(),
-                    title2: string = item.title.trim().toLowerCase();
+    public async findByTitle(title: string) : Promise<CollectionItem> {
+        for(const item of this.items) {
+            let title1: string = title.trim().toLowerCase(),
+                title2: string = item.title.trim().toLowerCase();
 
-                return title1 == title2;
-            })
+            if(title1 == title2) return item;
+        }
     }
 }
 

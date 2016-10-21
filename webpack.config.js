@@ -32,6 +32,9 @@ module.exports = {
         exclude: /(node_modules|bower_components)/,
         loader: "json"
       }
+    ],
+    noParse: [
+      /node_modules\/sinon/
     ]
   },
 

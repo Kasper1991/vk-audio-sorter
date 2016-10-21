@@ -10,11 +10,11 @@ export class Artist extends CollectionItem {
         super(title);
     }
 
-    public addTrack(track: Track) : void {
-        let existedTrack = this.tracks.findByTitle(track.title);
+    public async addTrack(track: Track) : Promise<void> {
+        let alreadyExists: CollectionItem = await this.tracks.findByTitle(track.title);
 
-        if(existedTrack) {
-            console.log("existed");
+        if(alreadyExists) {
+            track.shouldBeRemoved = true;
         }
 
         this.tracks.add(track);

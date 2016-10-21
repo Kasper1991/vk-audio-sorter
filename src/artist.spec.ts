@@ -5,7 +5,7 @@ describe('Artist', () => {
 
     let artist: Artist;
 
-    before(() => {
+    beforeEach(() => {
         artist = new Artist({
             title: 'title'
         });
@@ -13,21 +13,64 @@ describe('Artist', () => {
 
     describe('after initialization', () => {
         it('should have title and tracks', () => {
-            artist.should.have.all.keys(['title', 'tracks']);
+            artist.should.contains.all.keys(['title', 'tracks']);
         })
     });
 
     describe('#addTrack()', () => {
-        it('should add track to tracks', () => {
-            let prevTracksLength = artist.tracks.length,
-                track = new Track({
-                    title: 'title',
-                    id: 123456789,
-                    artist: artist
-                });
 
-            artist.addTrack(track);
-            artist.tracks.should.to.have.lengthOf(prevTracksLength + 1);
+        let track: Track;
+
+        before(() => {
+            track = new Track({
+                title: 'title 1',
+                id: 123456789,
+                artist: artist
+            });
+        });
+
+        it('should add track to tracks collection', () => {
+            let prevTracksLength = artist.tracks.length;
+
+            artist
+                .addTrack(track)
+                .then(() => {
+                    artist.tracks.should.have.lengthOf(prevTracksLength + 1);
+                })
+        });
+
+        it('should set track.shouldBeRemoved to false if track with the same title is unique', () => {
+            let newTrack = new Track({
+                title: 'title 2',
+                id: 123456789,
+                artist: artist
+            });
+
+            artist
+                .addTrack(track)
+                .then(() => {
+                    return artist.addTrack(newTrack);
+                })
+                .then(() => {
+                    newTrack.shouldBeRemoved.should.be.false;
+                })
+        });
+
+        it('should set track.shouldBeRemoved to true if track with the same title already exists', () => {
+            let existedTrack = new Track({
+                title: 'title 1',
+                id: 123456789,
+                artist: artist
+            });
+
+            artist
+                .addTrack(track)
+                .then(() => {
+                    return artist.addTrack(existedTrack);
+                })
+                .then(() => {
+                    existedTrack.shouldBeRemoved.should.be.ok;
+                })
         })
     });
 });
