@@ -11,8 +11,8 @@ export class TracksCollection extends Collection {
         return new Track(params);
     }
 
-    public handleDuplicated(track: Track) : CollectionItem {
-        track.shouldBeRemoved = true;
-        return track;
+    public processDuplicate(track: Track) : void {
+        console.log(track);
+        track.markToRemove();
     }
 }

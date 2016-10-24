@@ -1,8 +1,7 @@
 export abstract class Collection {
 
     protected options;
-
-    public items: CollectionItem[] = [];
+    protected items: CollectionItem[] = [];
 
     constructor(options = {}) {
         this.options = options;
@@ -14,9 +13,26 @@ export abstract class Collection {
         return this.items.length;
     }
 
-    public add(item: CollectionItem) : CollectionItem {
-        this.items.push(item);
+    public async process(params) : Promise<CollectionItem> {
+        let item = this.create(params);
+        item = await this.processItem(item);
         return item;
+    }
+
+    public async processItem(item: CollectionItem) : Promise<CollectionItem> {
+        let duplicate = await this.find(item);
+
+        if(duplicate) {
+            if(this.options.uniqueOnly) {
+                return duplicate;
+            }
+
+            if(this.options.processDuplicate) {
+                this.processDuplicate(item);
+            }
+        }
+
+        return this.add(item);
     }
 
     public async find(toFind: CollectionItem) : Promise<CollectionItem> {
@@ -33,28 +49,12 @@ export abstract class Collection {
         return title1 == title2;
     }
 
-    public async process(params) : Promise<CollectionItem> {
-        let instance = this.create(params);
-        return await this.processItem(instance);
-    }
-
-    public async processItem(item: CollectionItem) : Promise<CollectionItem> {
-        let duplicate = await this.find(item);
-
-        if(this.options.handleDuplicated && duplicate) {
-            item = this.handleDuplicated(item);
-        }
-
-        if(this.options.uniqueOnly && duplicate) {
-            return duplicate;
-        } else {
-            return this.add(item);
-        }
-    }
-
-    public handleDuplicated(item: CollectionItem) : CollectionItem {
+    public add(item: CollectionItem) : CollectionItem {
+        this.items.push(item);
         return item;
     }
+
+    public processDuplicate(item: CollectionItem) : void {}
 }
 
 export abstract class CollectionItem {

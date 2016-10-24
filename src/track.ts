@@ -3,7 +3,8 @@ import {CollectionItem} from './collection';
 
 export class Track extends CollectionItem {
 
-    public shouldBeRemoved: boolean = false;
+    private shouldBeRemoved: boolean = false;
+
     public artist: Artist;
     public id: number;
 
@@ -12,5 +13,9 @@ export class Track extends CollectionItem {
 
         this.artist = artist;
         this.id = id;
+    }
+
+    public markToRemove() {
+        this.shouldBeRemoved = true;
     }
 }

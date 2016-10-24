@@ -6,7 +6,7 @@ export class Artist extends CollectionItem {
 
     public tracks: TracksCollection = new TracksCollection({
         uniqueOnly: false,
-        handleDuplicated: true
+        processDuplicate: true
     });
 
     constructor({title} : {title: string}) {

@@ -10,13 +10,18 @@ chai.use(chaiAsPromised);
 
 describe('ArtistsCollection', () => {
 
-    let collection: ArtistsCollection,
+    let artist: Artist,
+        collection: ArtistsCollection,
         params = {
             title: 'title'
         };
 
+    before(() => {
+        artist = new Artist(params);
+    });
+
     beforeEach(() => {
-        collection = new ArtistsCollection();
+        collection = new ArtistsCollection({});
     });
 
     describe('after initialization', () => {
@@ -25,100 +30,125 @@ describe('ArtistsCollection', () => {
         })
     });
 
-    describe.skip('length', () => {
+    describe('length', () => {
         it('should return length of artists array', () => {
             checkLengthChange(
                 collection,
-                () => collection.createAndAdd(params)
-            );
-        })
-    });
-
-    describe.skip('#createAndAdd()', () => {
-
-        it('should return Artist instance', () => {
-            let track = collection.createAndAdd(params);
-            expect(track).to.be.instanceof(Artist);
-        });
-
-        it('should call #create() with necessary parameters', () => {
-            var spy = sinon.spy(collection, "create");
-            collection.createAndAdd(params);
-            expect(spy.calledWithExactly(params)).to.be.ok;
-        });
-
-        it('should call #add() with Artist instance', () => {
-            var spy = sinon.spy(collection, "add");
-            collection.createAndAdd(params);
-            expect(spy.firstCall.args[0]).to.be.instanceOf(Artist);
-        });
-
-    });
-
-    describe('#create()', () => {
-        it('should return Artist instance', () => {
-            let track = collection.create(params);
-            expect(track).to.be.instanceof(Artist);
-        });
-    });
-
-    describe('#add()', () => {
-        it('should add artist to array of artists', () => {
-            let artist = new Artist(params);
-
-            checkLengthChange(
-                collection.items,
                 () => collection.add(artist)
             );
         })
     });
 
-    describe.skip("#findByTitle()", () => {
+    describe('#process()', () => {
 
-        beforeEach(() => {
-            collection.createAndAdd(params);
+        it('should return Artist instance', () => {
+            let result = collection.process(params);
+            expect(result).eventually.to.be.instanceof(Artist);
         });
 
-        it('should return track if it is exists', () => {
-            let artist = collection.findByTitle('title');
-            return expect(artist).eventually.to.be.instanceOf(Artist);
+        it('should call #create()', () => {
+            let spy = sinon.spy(collection, "create");
+            return collection
+                .process(params)
+                .then(() => {
+                    return expect(spy.calledWithExactly(params)).to.be.ok;
+                })
         });
 
-        it('should return undefined if track is\'nt exists', () => {
-            let artist = collection.findByTitle('other title');
-            return expect(artist).eventually.to.be.undefined;
-        });
-
-        it('should find without case sensitivity', () => {
-            let artist = collection.findByTitle('TITLE');
-            return expect(artist).eventually.to.be.instanceOf(Artist);
-        });
-
-        it('should find with whitespace at begin or/and end of title', () => {
-            let artist = collection.findByTitle(' title  ');
-            return expect(artist).eventually.to.be.instanceOf(Artist);
+        it('should call #processItem() with Artist instance as argument', () => {
+            let spy = sinon.spy(collection, "processItem");
+            return collection
+                .process(params)
+                .then(() => {
+                    return expect(spy.firstCall.args[0]).to.be.instanceOf(Artist);
+                })
         });
     });
 
-    describe('#compareTitles()', () => {
+    describe('#create()', () => {
+        it('should return Artist instance', () => {
+            let result = collection.create(params);
+            expect(result).to.be.instanceof(Artist);
+        });
+    });
+
+    describe('#add()', () => {
+
+        it('should add artist to array of artists', () => {
+            checkLengthChange(
+                collection.items,
+                () => collection.add(artist)
+            );
+        });
+
+        it('should return Artist instance', () => {
+            let result = collection.add(artist);
+            expect(result).to.be.instanceof(Artist);
+        });
+    });
+
+    describe("#find()", () => {
+
+        beforeEach(() => {
+            return collection.add(artist);
+        });
+
+        it('should return track if it is exists', () => {
+            let otherArtist = new Artist({title: 'title'}),
+                result = collection.find(otherArtist);
+
+            return expect(result).eventually.to.be.instanceOf(Artist);
+        });
+
+        it('should return undefined if track is\'nt exists', () => {
+            let otherArtist = new Artist({title: 'other title'}),
+                result = collection.find(otherArtist);
+
+            return expect(result).eventually.to.be.undefined;
+        });
+
+        it('should call #isEquals() at least once', () => {
+            let spy = sinon.spy(collection, 'isEquals');
+
+            return collection
+                .find(artist)
+                .then(() => {
+                    return expect(spy.called).to.be.at.least(1);
+                })
+        });
+    });
+
+    describe('#isEquals()', () => {
 
         it('should return true if titles are equal', () => {
-            let result = collection.compareTitles('title', 'title');
+            let artist1 = new Artist(params),
+                artist2 = new Artist(params),
+                result = collection.isEquals(artist1, artist2);
+
             return expect(result).eventually.to.be.ok;
         });
 
         it('should return true if titles are\'nt equal', () => {
-            let result = collection.compareTitles('title 1', 'title 2');
+            let artist1 = new Artist({title: 'title'}),
+                artist2 = new Artist({title: 'other title'}),
+                result = collection.isEquals(artist1, artist2);
+
             return expect(result).eventually.to.be.false;
         });
 
         it('should compare without case sensitivity', () => {
-            let result = collection.compareTitles('TRACK', 'track');
+            let artist1 = new Artist({title: 'title'}),
+                artist2 = new Artist({title: 'TITLE'}),
+                result = collection.isEquals(artist1, artist2);
+
             return expect(result).eventually.to.be.ok;
         });
 
         it('should compare with whitespace at begin or/and end of title', () => {
-            let result = collection.compareTitles(' track  ', 'track');
+            let artist1 = new Artist({title: 'title'}),
+                artist2 = new Artist({title: ' title '}),
+                result = collection.isEquals(artist1, artist2);
+
             return expect(result).eventually.to.be.ok;
         });
     });

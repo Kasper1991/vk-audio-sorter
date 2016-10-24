@@ -8,11 +8,13 @@ import {ArtistsCollection} from './artists-collection';
 export class Parser{
 
     public tracks: TracksCollection = new TracksCollection({
-        uniqueOnly: false
+        uniqueOnly: false,
+        handleDuplicated: false
     });
 
     public artists: ArtistsCollection = new ArtistsCollection({
-        uniqueOnly: true
+        uniqueOnly: true,
+        handleDuplicated: false
     });
 
     public async setAudios(audios: VKAudio[]) : Promise<void> {
@@ -23,14 +25,13 @@ export class Parser{
 
     public async setAudio(audio: VKAudio) : Promise<void> {
         let artist: CollectionItem = await this.artists.process({
-            title: audio.artist
-        });
-
-        let track: CollectionItem = await this.tracks.process({
-            title: audio.title,
-            id: audio.aid,
-            artist
-        });
+                title: audio.artist
+            }),
+            track: CollectionItem = await this.tracks.process({
+                title: audio.title,
+                id: audio.aid,
+                artist
+            });
 
         (<Artist>artist).addTrack(<Track>track);
     }
