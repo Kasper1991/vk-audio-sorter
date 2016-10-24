@@ -5,7 +5,7 @@ let audios: VKAudio[] = require('./audios'),
     parser: Parser = new Parser();
 
 parser
-    .setAudios(audios)
+    .setAudios(audios.slice(0, 1000))
     .then(() => {
        console.log(parser)
     });

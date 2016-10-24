@@ -4,19 +4,16 @@ import {TracksCollection} from './tracks-collection';
 
 export class Artist extends CollectionItem {
 
-    public tracks: TracksCollection = new TracksCollection();
+    public tracks: TracksCollection = new TracksCollection({
+        uniqueOnly: false,
+        handleDuplicated: true
+    });
 
     constructor({title} : {title: string}) {
         super(title);
     }
 
     public async addTrack(track: Track) : Promise<void> {
-        let alreadyExists: CollectionItem = await this.tracks.findByTitle(track.title);
-
-        if(alreadyExists) {
-            track.shouldBeRemoved = true;
-        }
-
-        this.tracks.add(track);
+        this.tracks.processItem(track);
     }
 }

@@ -33,61 +33,58 @@ describe('Parser', () => {
 
     describe('#setAudios()', () => {
 
-        it('should call #setAudio() for each audio', (done) => {
+        it('should call #setAudio() for each audio', () => {
             var spy = sinon.spy(parser, "setAudio");
-            parser
+            return parser
                 .setAudios(audios)
                 .then(() => {
-                    expect(spy.callCount).to.be.equal(audios.length);
-                    done();
+                    return expect(spy.callCount).to.be.equal(audios.length);
                 });
         });
 
-        it('should call #setAudio() with audio as argument', (done) => {
+        it('should call #setAudio() with audio as argument', () => {
             var spy = sinon.spy(parser, "setAudio");
-            parser
+            return parser
                 .setAudios(audios)
                 .then(() => {
-                    audios.forEach((audio: VKAudio) => {
-                        expect(spy.calledWithExactly(audio)).to.be.ok;
+                    return audios.forEach((audio: VKAudio) => {
+                        return expect(spy.calledWithExactly(audio)).to.be.ok;
                     });
-                    done();
                 });
         });
     });
 
     describe('#setAudio()', () => {
 
-        it('should add track to tracks collection', (done) => {
-            checkLengthChangeAsync(
+        it('should add track to tracks collection', () => {
+            return checkLengthChangeAsync(
                 parser.tracks,
                 parser.setAudio(audios[0])
-            ). then(done);
+            );
         });
 
-        it('should add artist to track', (done) => {
-            parser
+        it('should add artist to track', () => {
+            return parser
                 .setAudio(audios[0])
                 .then(() => {
-                    expect(parser.tracks.items[0].artist).to.be.instanceOf(Artist);
-                    done();
+                    return expect(parser.tracks.items[0].artist).to.be.instanceOf(Artist);
                 });
         });
 
-        it('should push to artists collection artist with unique title only', (done) => {
-            let promise = parser
+        it('should push to artists collection artist with unique title only', () => {
+            return parser
                 .setAudio(audios[0])
-                .then(() => parser.setAudio(audios[0]));
-
-            checkLengthChangeAsync(parser.artists, promise).then(done);
+                .then(() => parser.setAudio(audios[0]))
+                .then(() => {
+                    expect(parser.artists.length).to.equals(1);
+                })
         });
 
-        it('should add to artist at least one track', (done) => {
-            parser
+        it('should add to artist at least one track', () => {
+            return parser
                 .setAudio(audios[0])
                 .then(() => {
-                    expect(parser.artists.items[0].tracks).have.length.at.least(1);
-                    done();
+                    return expect(parser.artists.items[0].tracks).have.length.at.least(1);
                 });
         });
     })
